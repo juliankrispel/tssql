@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "incremental": true,
+    "noImplicitAny": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "lib": ["es2020", "DOM"],
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "strict": true,
+    "types": [
+      "node",
+      "jest"
+    ]
+  },
+  "exclude": ["my-scripts", "node_modules"],
+  "ts-node": {
+    "files": true
+  },
+  "include": ["src"],
+  "files": ["d.ts"]
+}
