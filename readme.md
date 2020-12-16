@@ -1,24 +1,27 @@
-
+WIP - not ready for use
 
 ```ts
-
-type Tables = {
-  table1: {
-    column1: number,
-    column2: string
+type S = {
+  a: {
+    id: string, 
+    a1: number,
+    a2: string
   },
-  table2: {
-    column1: number,
-    column2: string
-    column3: date
+  b: {
+    b1: string,
+    b2: number
+  },
+  c: {
+    c1: string,
+    c2: number,
   }
 }
 
-const q = new Query<Tables>()
-q
-.from('table1')
-.select('column1', 'column2')
-.join('table2', )
+const q = query()
+.from('a')
+.join('inner', 'b', 'a.a1', 'b.b2')
+.join('left', 'c', 'b.b2', 'c.c1')
+.select('a.a1', 'b.b2')
 ```
 
 
