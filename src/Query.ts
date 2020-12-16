@@ -1,4 +1,4 @@
-type Val = number | null | Date | string
+type Val = number | null | Date | string | undefined
 
 type Operator = '=' | '>' | '>=' | '<' | '<='
 
@@ -111,7 +111,7 @@ function value(val: Val) {
     return val.toISOString()
   } else if (typeof val === 'number') {
     return val
-  } else if (val === null) {
+  } else if (val == null) {
     return null
   } else if (validLocalVariable.test(val)) {
     return val
@@ -193,7 +193,7 @@ function insert(
 function update(
   this: QueryState,
   table: unknown,
-  val: Partial<TableSchema>
+  val: unknown
 ) {
   this.updateInto = table
   this.updateValue = val
@@ -211,7 +211,7 @@ type QueryState = {
   insertInto?: unknown,
   insertValue?: unknown,
   updateInto?: unknown,
-  updateValue?: Partial<TableSchema>,
+  updateValue?: unknown
 }
 
 function query<
@@ -243,7 +243,7 @@ type S = {
   },
   c: {
     id3: string, 
-    c1: string,
+    c1?: string,
     c2: number,
   }
 }
@@ -256,18 +256,13 @@ type P = {
 
 const q = query<S, P>()
 
+q.from('c').join('left', 'a', 'c.c1', 'a.a1').select('a.a1', 'c.c2', 'a.id', 'c.c1')
+
 q.from('a')
   .join('full', 'c', 'a.a1', 'c.c2')
   .join('left', 'b', 'c.c1', 'b.b1')
   .where('c.c2', '=', 'd21')
 
-q.insert(
-  'c',
-  {
-    c1: '1',
-    c2: 1
-  }
-)
 
 q.update(
   'c',
@@ -275,3 +270,14 @@ q.update(
     c1: 'dwq'
   }
 ).where('c1', '=', 'dwq')
+
+
+const lambda = (event: any) => {
+
+  const query = q.insert(
+    'c',
+    {
+      c2: 1
+    }
+  )
+}
