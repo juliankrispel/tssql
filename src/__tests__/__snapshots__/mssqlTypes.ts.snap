@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`mssqlTypes Generates primary keys and schema from reading tables 1`] = `
+"type MySchemaPrimaryKeys = {
+    someTable: \\"a\\";
+};
+type MySchema = {
+    someTable: {
+        a: string | null;
+    };
+};
+"
+`;

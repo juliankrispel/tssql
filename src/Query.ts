@@ -1,3 +1,5 @@
+import { isQualifiedName } from "typescript"
+
 type Val = number | null | Date | string | undefined
 
 type Operator = '=' | '>' | '>=' | '<' | '<='
@@ -6,11 +8,15 @@ type TableSchema = {
   [key: string]: Val
 }
 
-type PrimaryKeys<T extends Schema> = {
+type IdentityKeys<T extends Schema> = {
   [p in keyof T]: string
 }
 
-type JoinType = 'inner' | 'left' | 'right' | 'full'
+type JoinType = 
+| 'inner'
+| 'left'
+| 'right'
+| 'full'
 
 type Schema = {
   [key: string]: TableSchema
@@ -43,6 +49,11 @@ interface UpdateWhere<
 
 
 interface Select<C> {
+  /**
+   * Constructs a select query, must be preceeded by from()
+   * @example
+   * from('myTable').select('myColA', 'myColB')
+   */
   (...columns: C[]): string 
 }
 
@@ -72,6 +83,11 @@ interface Join<
 interface From<
   T extends Schema
 > {
+  /**
+   * Constructs a from query, appended at the end
+   * @example
+   * from('myCol')
+   */
   <F extends keyof T>(from: F): {
     select: Select<keyof T[F]>,
     join: Join<T, F, never>,
@@ -81,7 +97,7 @@ interface From<
 
 interface Insert<
   T extends Schema,
-  P extends PrimaryKeys<T>
+  P extends IdentityKeys<T>
 > {
   <I extends keyof T>(
     table: I,
@@ -91,7 +107,7 @@ interface Insert<
 
 interface Update<
   T extends Schema,
-  P extends PrimaryKeys<T>
+  P extends IdentityKeys<T>
 > {
   <I extends keyof T>(
     table: I,
@@ -214,9 +230,9 @@ type QueryState = {
   updateValue?: unknown
 }
 
-function query<
+function Query<
   T extends Schema,
-  P extends PrimaryKeys<T>
+  P extends IdentityKeys<T>,
 >() {
   const _from: From<T> = from
   const _insert: Insert<T, P> = insert
@@ -230,54 +246,28 @@ function query<
   }
 }
 
-type S = {
-  a: {
-    id: string, 
-    a1: number,
-    a2: string
-  },
-  b: {
-    id2: string, 
-    b1: string,
-    b2: number
-  },
-  c: {
-    id3: string, 
-    c1?: string,
-    c2: number,
-  }
-}
-
-type P = {
-  a: 'id',
-  b: 'id2'
-  c: 'id3'
-}
-
-const q = query<S, P>()
-
-q.from('c').join('left', 'a', 'c.c1', 'a.a1').select('a.a1', 'c.c2', 'a.id', 'c.c1')
-
-q.from('a')
-  .join('full', 'c', 'a.a1', 'c.c2')
-  .join('left', 'b', 'c.c1', 'b.b1')
-  .where('c.c2', '=', 'd21')
-
-
-q.update(
-  'c',
-  {
-    c1: 'dwq'
-  }
-).where('c1', '=', 'dwq')
-
-
-const lambda = (event: any) => {
-
-  const query = q.insert(
-    'c',
-    {
-      c2: 1
-    }
-  )
-}
+// type S = {
+//   a: {
+//     id: string, 
+//     a1: number,
+//     a2: string
+//   },
+//   b: {
+//     id2: string, 
+//     b1: string,
+//     b2: number
+//   },
+//   c: {
+//     id3: string, 
+//     c1?: string,
+//     c2: number,
+//   }
+// }
+// 
+// type P = {
+//   a: 'id',
+//   b: 'id2'
+//   c: 'id3'
+// }
+// 
+// const q = Query<S, P>()
