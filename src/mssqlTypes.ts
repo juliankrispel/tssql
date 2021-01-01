@@ -4,7 +4,7 @@ import { camelCase } from 'camel-case'
 export type DataType = 'varchar' | 'int' | 'data' | 'decimal' | 'text' | 'datetime2' |'DateTime' | 'timestamp' | 'bigint' | 'nvarchar'
 
 export type TableColumn = {
-  PRIMARY_KEY: 'YES' | 'NO',
+  IS_IDENTITY: 'YES' | 'NO',
   TABLE_NAME: string ,
   COLUMN_NAME: string,
   IS_NULLABLE: 'YES' | 'NO',
@@ -43,7 +43,7 @@ export function mssqlTypes(cols: TableColumn[], name: string) {
   const tables: {
     [key: string]: ts.PropertySignature[]
   } = {}
-  const primaryKeys: {
+  const identityKeys: {
     [key: string]: string
   } = {}
   let schemaName = camelCase(name)
@@ -53,8 +53,8 @@ export function mssqlTypes(cols: TableColumn[], name: string) {
     const tableName = col.TABLE_NAME
     tables[tableName] ||= []
 
-    if (col.PRIMARY_KEY === 'YES') {
-      primaryKeys[tableName] = col.COLUMN_NAME
+    if (col.IS_IDENTITY === 'YES') {
+      identityKeys[tableName] = col.COLUMN_NAME
     }
 
     tables[tableName].push(factory.createPropertySignature(
@@ -77,12 +77,12 @@ export function mssqlTypes(cols: TableColumn[], name: string) {
         factory.createIdentifier(primaryKeysTypeIdentifier),
         undefined,
         factory.createTypeLiteralNode(
-          Object.keys(primaryKeys).map(table => (
+          Object.keys(identityKeys).map(table => (
             factory.createPropertySignature(
               undefined,
               factory.createIdentifier(table),
               undefined,
-              factory.createLiteralTypeNode(factory.createStringLiteral(primaryKeys[table]))
+              factory.createLiteralTypeNode(factory.createStringLiteral(identityKeys[table]))
             )
           ))
         ),
