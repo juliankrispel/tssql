@@ -5,8 +5,9 @@ export type DataType = 'varchar' | 'int' | 'data' | 'decimal' | 'text' | 'dateti
 
 export type TableColumn = {
   IS_IDENTITY: 'YES' | 'NO',
-  TABLE_NAME: string ,
+  TABLE_NAME: string,
   COLUMN_NAME: string,
+  COLUMN_DEFAULT: string | number | null,
   IS_NULLABLE: 'YES' | 'NO',
   DATA_TYPE: DataType,
 }

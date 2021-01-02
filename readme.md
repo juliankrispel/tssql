@@ -1,27 +1,13 @@
-WIP - not ready for use
+### pre-release - not ready for use
+# tssql
 
-```ts
-type S = {
-  a: {
-    id: string, 
-    a1: number,
-    a2: string
-  },
-  b: {
-    b1: string,
-    b2: number
-  },
-  c: {
-    c1: string,
-    c2: number,
-  }
-}
+- `tssql` is a well typed query builder, covering a small subset of sql.
+- The priority is on type-safety over feature-parity with sql dialects.
 
-const q = query()
-.from('a')
-.join('inner', 'b', 'a.a1', 'b.b2')
-.join('left', 'c', 'b.b2', 'c.c1')
-.select('a.a1', 'b.b2')
-```
-
-
+Roadmap:
+- [x] Query interface
+- [ ] sql server specific syntax
+- [ ] postgres specific syntax
+- [ ] generate schema type from sql server
+- [ ] generate sql server types
+- [ ] generate clients

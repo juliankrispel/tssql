@@ -8,16 +8,18 @@
     "lib": ["es2020", "DOM"],
     "esModuleInterop": true,
     "sourceMap": true,
+    "rootDir": "src",
+    "outDir": "dist",
     "strict": true,
     "types": [
       "node",
       "jest"
     ]
   },
-  "exclude": ["my-scripts", "node_modules"],
+  "exclude": ["node_modules"],
   "ts-node": {
     "files": true
   },
   "include": ["src"],
-  "files": ["d.ts"]
+  "files": [".d.ts"]
 }
