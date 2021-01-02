@@ -1,11 +1,12 @@
 {
   "name": "tssql",
   "version": "0.0.1",
-  "description": "Well typed query builder for sql",
+  "description": "Well typed sql query builder",
   "main": "dist/index.js",
   "scripts": {
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "prepublish": ""
   },
   "author": "Julian Krispel-Samsel",
   "license": "MIT",
