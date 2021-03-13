@@ -9,7 +9,8 @@ describe('mssqlTypes', () => {
     const t = mssqlTypes([{
       TABLE_NAME: 'someTable',
       COLUMN_NAME: 'a',
-      PRIMARY_KEY: 'YES',
+      IS_IDENTITY: 'YES',
+      COLUMN_DEFAULT: null,
       IS_NULLABLE: 'YES',
       DATA_TYPE: 'nvarchar',
     }], 'my-schema')

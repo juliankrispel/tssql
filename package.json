@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
-    "prepublish": ""
+    "build": "tsc",
+    "prepublish": "npm run build"
   },
   "author": "Julian Krispel-Samsel",
   "license": "MIT",
